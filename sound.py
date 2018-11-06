@@ -7,6 +7,7 @@ Created on Tue Oct 30 16:12:50 2018
 """
 
 import numpy
+import math
 import wave,sys,os
 from subprocess import check_output,CalledProcessError
 max_amplitude = 2**15 - 1
@@ -152,6 +153,44 @@ def play_song():
     song = Nothing_Else_Matters()
     play(song)
 
+def play_first():
+    N = 30
+    song = note(640,.2)    
+    for n in range(1,N):
+        val = pow(numpy.e,-4*n / N) * numpy.sin(8*numpy.pi*n/N)
+        anote = note(val*200+440,.2)
+        song = numpy.concatenate((song,anote))
+    song *= max_amplitude
+    play(song)
+
+def play_second():
+    N = 100
+    song = note(442,.2)  
+    x = 0.01
+    q = 3
+    for n in range(1,N):
+        x = x + q * x * (1-x)
+        anote = note(x*200+440,.2)
+        song = numpy.concatenate((song,anote))
+    song *= max_amplitude
+    play(song)
+
+def play_pi():
+    N = 100
+    song = note(500,.2)
+    x = math.pi
+    for n in range(1,N):
+        x = x * 10
+        y = int(x)%10
+        anote = note(y*20+440,.2)
+        song = numpy.concatenate((song,anote))
+    song *= max_amplitude
+    play(song)
+        
+#play_pi()
+#play_second()
+
+play_first()
 #play_atone()
 #play_echo()
 #play_song()    
